@@ -1,0 +1,79 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Environment files
+.env
+*.env.local
+
+# Data (raw videos and derived artifacts are large; keep structure via .gitkeep)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/own_data/**/raw/*
+!data/own_data/**/raw/.gitkeep
+data/own_data/**/annotations/*
+!data/own_data/**/annotations/.gitkeep
+
+# Public datasets: quá lớn (MOT20 ~14GB) và license hạn chế (research only).
+# Tải từ nguồn gốc theo hướng dẫn trong README, không commit vào repo.
+data/public/*
+!data/public/.gitkeep
+
+# Video/ảnh dữ liệu ở mọi nơi dưới data/ (chặn file >100MB GitHub limit)
+data/**/*.mp4
+data/**/*.avi
+data/**/*.mkv
+data/**/*.mov
+data/**/*.webm
+data/**/*.zip
+data/**/*.tar
+data/**/*.gz
+
+# Artifacts (model weights, runs, tracking CSV output)
+artifacts/models/*
+!artifacts/models/.gitkeep
+artifacts/runs/*
+!artifacts/runs/.gitkeep
+artifacts/eval/*
+!artifacts/eval/.gitkeep
+artifacts/*.csv
+artifacts/*.json
+artifacts/*.mp4
+
+# Ultralytics tự sinh khi chạy YOLO
+.ultralytics/
+runs/
+
+# YOLO weights
+*.pt
+*.onnx
+*.engine
+*.torchscript
+*.mlpackage
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

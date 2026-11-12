@@ -1,0 +1,23 @@
+# AI Service - dependencies (P2 single-camera prototype)
+# Python 3.11 (recommended for Windows + ultralytics compatibility)
+# Install: .\.venv\Scripts\python.exe -m pip install -r ai_service\requirements.txt
+
+# Detection + tracking
+ultralytics>=8.3.0,<9.0
+torch>=2.5.0
+torchvision>=0.20.0
+
+# Tracking assignment (required by ByteTrack/BoT-SORT)
+lapx>=0.5.2
+
+# Video IO
+opencv-python>=4.10.0
+
+# Data / config
+numpy>=2.0,<3.0
+pandas>=2.2,<4.0
+pyyaml>=6.0
+
+# NOTE: default torch wheel is CPU-only.
+# For CUDA on RTX 3050, reinstall after installing this file:
+#   pip install --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu124

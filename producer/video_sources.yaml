@@ -1,0 +1,36 @@
+# Nguồn video cho producer / AI service (demo mode).
+# Mỗi camera là một nguồn độc lập; dùng file mp4 hoặc RTSP.
+# Bắt buộc: camera_id, zone_id (zone quan sát chính), file hoặc rtsp.
+# Tuỳ chọn: description, fps_override, start_offset_seconds (để đồng bộ đa camera).
+
+site_id: PLAZA_01
+session_id: S01
+
+cameras:
+  - camera_id: CAM01
+    zone_id: Z_N            # cổng Bắc
+    description: "Lối phía Bắc - virtual line E_NC"
+    file: data/raw/sample.mp4
+    start_offset_seconds: 0.0
+    notes: "Thay bằng file plaza thật khi có; hiện dùng sample để smoke test pipeline"
+
+  # Bật khi có video camera thật. Để comment để tránh lỗi file-not-found.
+  # - camera_id: CAM02
+  #   zone_id: Z_E
+  #   description: "Lối phía Đông - virtual line E_EC"
+  #   file: data/own_data/plaza_01/session_001/raw/cam02.mp4
+  #   start_offset_seconds: 0.0
+
+  # Ví dụ nguồn RTSP (deployment mode):
+  # - camera_id: CAM05
+  #   zone_id: Z_C
+  #   description: "Camera trung tâm, quan sát occupancy"
+  #   rtsp: "rtsp://user:pass@192.168.1.50:554/stream1"
+  #   start_offset_seconds: 0.0
+
+edge_map:
+  # Map edge_id -> 2 zone (dùng cho line crossing health check)
+  E_NC: [Z_N, Z_C]
+  E_EC: [Z_E, Z_C]
+  E_SC: [Z_S, Z_C]
+  E_WC: [Z_W, Z_C]

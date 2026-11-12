@@ -1,0 +1,71 @@
+# Geometry cho F04 (line crossing) + F05 (zone occupancy).
+#
+# Toạ độ theo PIXEL của frame ĐÃ QUA XỬ LÝ trong app.py
+# (nghĩa là sau resize_width trong configs/app.yaml).
+#
+# Với cam01.mp4 (MOT20-stitched) đang dùng resize_width=960 -> frame 960x671.
+# Toạ độ dưới đây vẽ trên frame 960x671.
+#
+# QUAN TRỌNG: khi có video plaza thật, phải vẽ lại toàn bộ theo toạ độ video đó.
+# Với video tự quay, dùng script scripts/draw_geometry.py (sẽ thêm) hoặc vẽ
+# bằng MSPaint/Photoshop trên 1 frame trích ra, đọc toạ độ pixel.
+
+site_id: PLAZA_01
+session_id: S01
+
+# Ghi chú: file này là CẤU HÌNH DEMO cho clip MOT test.
+demo_note: >
+  Toạ độ dưới đây chỉ minh hoạ cơ chế line/zone, KHÔNG phản ánh mặt bằng
+  plaza thật. Khi có video tự quay, thay toàn bộ bằng toạ độ đo trên video đó.
+
+# Virtual line: dùng để đếm IN/OUT qua lối đi.
+# inside_side: phía "trong" của line theo pháp tuyến (-dy, dx).
+#   - "positive": bên trái hướng đi từ (x1,y1)->(x2,y2)
+#   - "negative": bên phải
+lines:
+  - line_id: L_CAM01_MID
+    camera_id: CAM01
+    edge_id: E_TEST
+    x1: 0
+    y1: 380
+    x2: 960
+    y2: 380
+    inside_side: positive
+    description: "Đường ngang giữa khung hình (demo)"
+
+# Zone: polygon pixel cho occupancy.
+# area_m2: nếu biết diện tích thực (sau khi hiệu chuẩn homography), điền để có density.
+zones:
+  - zone_id: Z_TOP
+    camera_id: CAM01
+    polygon:
+      - [0, 0]
+      - [960, 0]
+      - [960, 380]
+      - [0, 380]
+    area_m2: null
+    description: "Nửa trên khung hình (demo)"
+
+  - zone_id: Z_BOTTOM
+    camera_id: CAM01
+    polygon:
+      - [0, 380]
+      - [960, 380]
+      - [960, 671]
+      - [0, 671]
+    area_m2: null
+    description: "Nửa dưới khung hình (demo)"
+
+# Cấu hình chi tiết (tuỳ chọn; mặc định đã hợp lý).
+line_counting:
+  margin_ratio: 0.05      # bỏ 5% hai đầu line để tránh đếm sát mép
+  min_consecutive: 1
+
+zone_occupancy:
+  window_seconds: 10.0    # cửa sổ tổng hợp occupancy
+
+tracking_motion:
+  min_track_frames: 10    # track ngắn hơn bị bỏ (nhiễu)
+  smoothing_window: 5     # frame để fit vận tốc
+  stationary_speed_px: 5.0
+  meters_per_pixel: 0.0   # =0: không đổi sang m/s; điền khi đã hiệu chuẩn

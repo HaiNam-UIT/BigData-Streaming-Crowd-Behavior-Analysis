@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://se363.local/schemas/raw_frame.schema.json",
+  "title": "RawFrame",
+  "description": "Một frame thô (demo mode) hoặc metadata frame sau decode. Không chứa pixel trong JSON; pixel đi qua object store hoặc topic camera-frames chỉ trong demo. Xem PROJECT_DESIGN_AND_DATA.md §8.3, §12.3.",
+  "type": "object",
+  "required": ["site_id", "session_id", "camera_id", "frame_id", "timestamp", "source_type"],
+  "additionalProperties": false,
+  "properties": {
+    "site_id": { "type": "string", "minLength": 1, "examples": ["PLAZA_01"] },
+    "session_id": { "type": "string", "minLength": 1, "examples": ["S01"] },
+    "camera_id": { "type": "string", "pattern": "^CAM[0-9]{2,3}$", "examples": ["CAM01"] },
+    "zone_id": {
+      "type": ["string", "null"],
+      "description": "Zone chính camera quan sát; null nếu chưa mapping.",
+      "examples": ["Z_N", "Z_E", "Z_S", "Z_W", "Z_C"]
+    },
+    "frame_id": { "type": "integer", "minimum": 0 },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Thời điểm frame theo ISO-8601 UTC, ví dụ 2026-11-05T09:30:00.000Z"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["group_recorded", "public_dataset", "synthetic", "rtsp_live"]
+    },
+    "width": { "type": "integer", "minimum": 1 },
+    "height": { "type": "integer", "minimum": 1 },
+    "fps_source": { "type": "number", "exclusiveMinimum": 0 },
+    "fps_sampled": { "type": "number", "exclusiveMinimum": 0 },
+    "source_uri": {
+      "type": ["string", "null"],
+      "description": "Đường dẫn file/RTSP gốc; null nếu không tiết lộ được."
+    }
+  }
+}

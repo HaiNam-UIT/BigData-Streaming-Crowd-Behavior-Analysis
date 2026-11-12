@@ -1,0 +1,66 @@
+# Config dùng chung cho toàn pipeline (demo mode).
+# Đọc bởi ai_service/app.py, producer/camera_producer.py, streaming/crowd_stream_job.py.
+
+site:
+  site_id: PLAZA_01
+  name: "Plaza Demo Site"
+  # Diện tích dùng cho density (m2). Hiệu chuẩn theo mặt bằng thật trước khi dùng density.
+  total_area_m2: 1200.0
+
+paths:
+  # Thư mục gốc dữ liệu video (relative to repo root)
+  video_dir: data/own_data/plaza_01
+  output_dir: artifacts
+  # Model weights; YOLO sẽ tự tải khi lần đầu chạy nếu chưa có file
+  model_path: artifacts/models/yolo11n.pt
+  runs_dir: artifacts/runs
+
+video:
+  # FPS lấy mẫu để inference; -1 = giữ nguyên fps gốc
+  sample_fps: 5.0
+  # Resize chiều rộng trước khi detect (giữ tỉ lệ); 0 = giữ nguyên
+  resize_width: 960
+  # Bỏ qua frame đầu (giây) để tránh logo/black frame
+  skip_seconds: 0.0
+
+detection:
+  model: yolo11n.pt
+  device: auto            # auto | cpu | cuda | 0
+  imgsz: 960
+  conf_threshold: 0.30
+  iou_threshold: 0.50
+  # COCO class id của person (giữ lại duy nhất class này)
+  person_class_id: 0
+  max_detections: 300
+
+tracking:
+  enabled: true
+  tracker: bytetrack.yaml  # bytetrack.yaml | botsort.yaml
+  # Một track bị coi là "lost" sau N giây không detect lại
+  max_lost_seconds: 2.0
+  # Số frame tối thiểu track phải tồn tại để tính vào thống kê
+  min_track_frames: 10
+
+output:
+  # Ghi CSV tracking per detection
+  save_tracking_csv: true
+  tracking_csv_name: tracking_results.csv
+  # Ghi video annotated để xem bằng mắt
+  save_annotated_video: true
+  annotated_video_name: annotated.mp4
+  # Ghi camera_metric mỗi window (dùng cho Kafka về sau)
+  save_camera_metrics: true
+  camera_metrics_name: camera_metrics.csv
+  metrics_window_seconds: 10.0
+  # F03: motion feature mỗi track
+  motion_metrics_name: motion_metrics.csv
+  motion_directions_name: motion_directions.csv
+  # F04: line crossing event (chỉ ghi nếu configs/geometry.yaml có lines)
+  line_crossings_name: line_crossings.csv
+  # F05: zone occupancy theo window (chỉ ghi nếu geometry có zones)
+  zone_occupancy_name: zone_occupancy.csv
+
+logging:
+  level: INFO
+  # In tiến độ mỗi N frame
+  progress_every_frames: 100

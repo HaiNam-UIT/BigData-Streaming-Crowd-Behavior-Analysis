@@ -1,0 +1,13 @@
+{
+  "site_id": "PLAZA_01",
+  "session_id": "session_001",
+  "status": "placeholder",
+  "note": "Chưa có video plaza tự quay. Thư mục raw/ hiện trống.",
+  "instructions": [
+    "Quay 1-3 video 3-5 phút, góc cao nhìn xuống lối đi/sân.",
+    "Đặt vào raw/ với tên cam01.mp4, cam02.mp4, ...",
+    "Cập nhật session_metadata.json với thời gian, vị trí camera, điều kiện ánh sáng.",
+    "Sau đó annotation: zones.yaml (polygon), lines.yaml (virtual line), zone_occupancy.csv (đếm mỗi 30s)."
+  ],
+  "not_plaza_hint": "Video ghép từ MOT20 nằm ở data/raw/mot20_stitched.mp4, chỉ dùng test pipeline."
+}
